@@ -12,7 +12,6 @@
 // Custom definitions may go here
 
 // Include common definitions from above.
-
 buildscript {
     repositories {
         mavenCentral()
@@ -37,11 +36,14 @@ android {
         jniLibs.useLegacyPackaging true
     }
 }
+
 repositories {
+    // Dairy releases repository
     maven {
         url = "https://repo.dairy.foundation/releases"
     }
 }
+
 dependencies {
     implementation project(':FtcRobotController')
     implementation("dev.frozenmilk.sinister:Sloth:0.2.4")
@@ -49,4 +51,5 @@ dependencies {
     implementation 'dev.nextftc:hardware:1.0.0' // If you would like to use the hardware module
     implementation 'dev.nextftc:control:1.0.0'
     implementation 'dev.nextftc:bindings:1.0.1'
+    implementation("com.acmerobotics.slothboard:dashboard:0.2.4+0.4.17")
 }
