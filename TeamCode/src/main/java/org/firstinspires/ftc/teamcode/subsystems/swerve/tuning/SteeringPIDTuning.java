@@ -12,7 +12,6 @@ import org.firstinspires.ftc.teamcode.subsystems.swerve.*;
 public class SteeringPIDTuning extends OpMode {
     private SwerveModuleHardware hardware;
     private SteeringPIDController controller;
-    private ElapsedTime runtime;
     private ElapsedTime testTimer;
 
     static double kP = SwerveConstants.STEER_KP;
@@ -28,7 +27,6 @@ public class SteeringPIDTuning extends OpMode {
 
     private TestMode mode = TestMode.MANUAL;
     private double targetHeading = 0;
-    private double startHeading = 0;
 
     private double maxError = 0;
     private double settleTime = 0;
@@ -42,7 +40,6 @@ public class SteeringPIDTuning extends OpMode {
 
     @Override
     public void init() {
-        runtime = new ElapsedTime();
         testTimer = new ElapsedTime();
 
         hardware = new SwerveModuleHardware(
@@ -51,7 +48,7 @@ public class SteeringPIDTuning extends OpMode {
                 "cidBottom",
                 "cidEncoder",
                 true,
-                false,
+                true,
                 0.0
         );
 
@@ -84,8 +81,7 @@ public class SteeringPIDTuning extends OpMode {
 
         if (aPressed) {
             mode = TestMode.STEP_RESPONSE;
-            startHeading = hardware.getModuleAngle();
-            targetHeading = MathUtils.normalizeAngle(startHeading + Math.PI / 2);
+            targetHeading = MathUtils.normalizeAngle(targetHeading + Math.PI / 2);
             testTimer.reset();
             maxError = 0;
             hasSettled = false;
@@ -147,7 +143,7 @@ public class SteeringPIDTuning extends OpMode {
         double topPower = SwerveConstants.STEER_GEAR_RATIO * steeringOutput;
         double bottomPower = SwerveConstants.STEER_GEAR_RATIO * steeringOutput;
 
-        hardware.setMotorPowers(topPower, -bottomPower);
+        hardware.setMotorPowers(topPower, bottomPower);
 
         displayTelemetry(currentHeading);
     }

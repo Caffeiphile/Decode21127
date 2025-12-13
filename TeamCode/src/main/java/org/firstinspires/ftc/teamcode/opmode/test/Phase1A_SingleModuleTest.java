@@ -4,13 +4,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.subsystems.swerve.SwerveConstants;
-import org.firstinspires.ftc.teamcode.subsystems.swerve.FeedforwardController;
-import org.firstinspires.ftc.teamcode.subsystems.swerve.SteeringPIDController;
-import org.firstinspires.ftc.teamcode.subsystems.swerve.SwervePod;
-import org.firstinspires.ftc.teamcode.subsystems.swerve.SwerveModuleHardware;
-import org.firstinspires.ftc.teamcode.subsystems.swerve.MathUtils;
-import org.firstinspires.ftc.teamcode.subsystems.swerve.Vector2d;
+import org.firstinspires.ftc.teamcode.subsystems.swerve.*;
 
 @TeleOp(name="Phase 1A: Single Module Test", group="Swerve Test")
 public class Phase1A_SingleModuleTest extends OpMode {
@@ -34,7 +28,7 @@ public class Phase1A_SingleModuleTest extends OpMode {
                 0.0
         );
 
-        FeedforwardController driveFF = new FeedforwardController(
+        DriveMotorController driveFF = new DriveMotorController(
                 SwerveConstants.DRIVE_KV,
                 SwerveConstants.DRIVE_KA,
                 SwerveConstants.DRIVE_KS
@@ -50,7 +44,6 @@ public class Phase1A_SingleModuleTest extends OpMode {
         pod = new SwervePod(hardware, position, driveFF, steeringPID);
 
         telemetry.addData("Status", "Initialized");
-        telemetry.addData("Hardware", hardware.isInitialized() ? "OK" : "FAILED");
         telemetry.update();
     }
 
@@ -58,9 +51,6 @@ public class Phase1A_SingleModuleTest extends OpMode {
     public void loop() {
         loopTimer.reset();
 
-        if (gamepad1.a) {
-            pod.reset();
-        }
         if (gamepad1.x) {
             testDriveOnly = !testDriveOnly;
         }
@@ -83,7 +73,7 @@ public class Phase1A_SingleModuleTest extends OpMode {
         double forwardScalar = driveCommand * Math.cos(targetHeading);
         double sideScalar = driveCommand * Math.sin(targetHeading);
 
-        pod.updateModule(forwardScalar, sideScalar, 0);
+        pod.updateModule(forwardScalar, sideScalar);
 
         SwervePod.ModuleState state = pod.getModuleState();
 
